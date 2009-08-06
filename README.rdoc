@@ -4,45 +4,29 @@
 
 == DESCRIPTION:
 
-FIX (describe your package)
-
-== FEATURES/PROBLEMS:
-
-* FIX (list of features or problems)
+Helps calculate the next run for schedulers using a human readable syntax.
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  period = Period.new(Time.now).every(2).hours.at(20).from(10).to(15) # means: every 2 hours at :20 from 10:00 to 15:00 (10:20, 12:20, 14:20)
+  
+  period.next_run # returns the next calculated time as a Time object
+  period.next_run(1) # skips 1 run (as of 0.1, it behaves buggy with from and to limits)
+  
+  Period.new.every(:half).hour # every 30 minutes
+  Period.every.week # every week
+  Period.every(5).seconds # every 5 seconds
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* active support (not sure about the exact version yet)
 
 == INSTALL:
 
 * FIX (sudo gem install, anything else)
 
-== LICENSE:
+== TODO:
 
-(The MIT License)
-
-Copyright (c) 2009 FIXME full name
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+* Period.every(:other).day
+* support "overnight" limits (from 22:00 tonight to 02:00 tomorrow) like:
+  Period.every.hour.from(20).to(2)

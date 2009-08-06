@@ -1,6 +1,4 @@
 class Period
-  require 'active_support'
-  
   DAY_PERIODS = {
     "morning" => 9,
     "noon" => 12,
@@ -8,16 +6,35 @@ class Period
     "midnight" => 0
   }
   
+=begin rdoc
+  Initializes a new Period object with the last_run used for the next_run calculations
+  
+  A Period object needs at least an every and time period (minutes, hours etc) to functions properly:
+    Period.new.every.day
+    Period.new(2.hours.ago).every(4).hours
+  
+  If last_run is nil, next_run will always return Time.now
+=end
   def initialize(last_run = nil)
     @last_run = last_run
     @at = 0
   end
   
+=begin rdoc
+  Sets the interval at which the runs should be calculated:
+  
+    every.day
+    every(20).minutes
+    every(2).hours
+=end
   def every(int = 1)
     @interval = int
     return self
   end
   
+=begin rdoc
+  Sets the scope to one week so that <tt>every(2).weeks</tt> means "every 2 weeks"
+=end
   def weeks
     @scope = 1.week
     reset_on_base 7
@@ -26,6 +43,9 @@ class Period
   end
   alias_method :week, :weeks
   
+=begin rdoc
+  Sets the scope to one day so that <tt>every(4).days</tt> means "every 4 days"
+=end
   def days
     @scope = 1.days
     reset_on_base 24
@@ -34,6 +54,9 @@ class Period
   end
   alias_method :day, :days
   
+=begin rdoc
+  Sets the scope to one hour so that <tt>every(6).hours</tt> means "every 6 hours"
+=end
   def hours
     @scope = 1.hour
     reset_on_base 60
@@ -42,6 +65,9 @@ class Period
   end
   alias_method :hour, :hours
   
+=begin rdoc
+  Sets the scope to one minute so that <tt>every(20).minutes</tt> means "every 20 minutes"
+=end
   def minutes
     @scope = 1.minute
     reset_on_base 60
@@ -50,6 +76,21 @@ class Period
   end
   alias_method :minute, :minutes
   
+=begin rdoc
+  Sets the scope to one second so that <tt>every(5).seconds</tt> means "every 5 seconds"
+=end
+  def seconds
+    @scope = 1.second
+    reset_on_base false
+    
+    return self
+  end
+  alias_method :second, :seconds
+  
+=begin rdoc
+  Sets the from limit based on the scope:
+    every(2).hours.from(8) # means "every 2 hours beginning from 8:00"
+=end
   def from(time)
     raise "From can't be after to" if @to and @to < time
     
@@ -57,6 +98,10 @@ class Period
     return self
   end
   
+=begin rdoc
+  Sets the to limit based on the scope:
+    every(2).hours.to(12) # means "every 2 hours until 12:00"
+=end
   def to(time)
     raise "To can't be before from" if @from and time < @from
     
@@ -64,6 +109,13 @@ class Period
     return self
   end
   
+=begin rdoc
+  Sets a specific "sub-time" for the next_run:
+    every(2).hours.at(15) # means "every 2 hours at the first quarter of each" e.g. 12:15, 14:15, 16:15
+  
+  NOTE: when using at and from, to limits together the limits *always* calculate at 0 "sub-time":
+    every(2).hours.at(15).from(12).to(16) # will return 12:15, 14:15 but not 16:15 because the to limit ends at 16:00
+=end
   def at(time)
     unless time.is_a?(Integer)
       time = case time.to_s
@@ -82,6 +134,13 @@ class Period
     return self
   end
   
+=begin rdoc
+  This return a Time object for the next calculated time:
+    now = "Aug 05 14:40:23 2009".to_time
+    Period.new(now).every(2).hours.next_run # => Wed Aug 05 16:00:00 UTC 2009
+    
+  Note that it round all "sub-time" to 0 by default (can be overriden with at)
+=end
   def next_run(skip = 0)
     return Time.now unless @last_run
     
@@ -109,6 +168,8 @@ class Period
   private
   
   def reset_on_base(base)
+    @interval = 1 unless base
+    
     @interval = case @interval.to_s
     when /half/i
       @scope = @scope/base

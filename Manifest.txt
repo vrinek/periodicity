@@ -4,6 +4,7 @@ PostInstall.txt
 README.rdoc
 Rakefile
 lib/periodicity.rb
+lib/periodicity/period.rb
 script/console
 script/destroy
 script/generate
