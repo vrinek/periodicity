@@ -1,4 +1,12 @@
-=== 0.1 2009-08-06
+=== 0.2 -- 2009-08-06
 
-* 1 major enhancement:
-  * Initial release
+* <b>[FEATURE]</b> Can use _overnight_ limits (e.g. from 22:00 to 02:00)
+* Removed some duplicate code
+
+=== 0.1.1 -- 2009-08-06
+
+* Can use <tt>.every(:other)</tt> which means <tt>.every(2)</tt>
+
+=== 0.1 -- 2009-08-06
+
+* Initial release
