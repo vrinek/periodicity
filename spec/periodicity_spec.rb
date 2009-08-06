@@ -28,9 +28,9 @@ describe Period do
     period.every.day.at(:noon).next_run.should == "Aug 06 12:00:00 2009".to_time
     period.every.day.at(:afternoon).next_run.should == "Aug 06 19:00:00 2009".to_time
     
-    period.every.day.at(:midnight).next_run.should == "Aug 06 00:00:00 2009".to_time
-    period.every.day.at(:midnight).next_run(1).should == "Aug 07 00:00:00 2009".to_time
-    period.every.day.at(:midnight).next_run(2).should == "Aug 08 00:00:00 2009".to_time
+    (n = period.every.day.at(:midnight).next_run).should == "Aug 06 00:00:00 2009".to_time
+    (n = Period.new(n).every.day.at(:midnight).next_run).should == "Aug 07 00:00:00 2009".to_time
+    (n = Period.new(n).every.day.at(:midnight).next_run).should == "Aug 08 00:00:00 2009".to_time
 
     period.every.day.at('5').next_run.should == "Aug 06 05:00:00 2009".to_time
     period.every.day.at('5:00').next_run.should == "Aug 06 05:00:00 2009".to_time
@@ -43,9 +43,9 @@ describe Period do
     period.every.week.at(20).next_run.should == "Aug 12 20:00:00 2009".to_time
     period.every.day.at(14).next_run.should == "Aug 06 14:00:00 2009".to_time
     
-    period.every.hour.at(30).next_run.should == "Aug 05 15:30:00 2009".to_time
-    period.every.hour.at(30).next_run(1).should == "Aug 05 16:30:00 2009".to_time
-    period.every.hour.at(30).next_run(2).should == "Aug 05 17:30:00 2009".to_time
+    (n = period.every.hour.at(30).next_run).should == "Aug 05 15:30:00 2009".to_time
+    (n = Period.new(n).every.hour.at(30).next_run).should == "Aug 05 16:30:00 2009".to_time
+    (n = Period.new(n).every.hour.at(30).next_run).should == "Aug 05 17:30:00 2009".to_time
   end
   
   it "should take into account the limits" do
@@ -53,39 +53,48 @@ describe Period do
     period.every.hour.from(13).next_run.should == "Aug 05 15:00:00 2009".to_time
     period.every(2).hours.from(12).next_run.should == "Aug 05 16:00:00 2009".to_time
     
-    period.every(2).hours.from(21).next_run.should == "Aug 05 21:00:00 2009".to_time
-    period.every(2).hours.from(21).next_run(1).should == "Aug 05 23:00:00 2009".to_time
-    period.every(2).hours.from(21).next_run(2).should == "Aug 06 21:00:00 2009".to_time
+    (n = period.every(2).hours.from(21).next_run).should == "Aug 05 21:00:00 2009".to_time
+    (n = Period.new(n).every(2).hours.from(21).next_run).should == "Aug 05 23:00:00 2009".to_time
+    (n = Period.new(n).every(2).hours.from(21).next_run).should == "Aug 06 21:00:00 2009".to_time
     
-    period.every(2).hours.to(12).next_run.should == "Aug 06 00:00:00 2009".to_time
-    period.every(2).hours.to(12).next_run(1).should == "Aug 06 02:00:00 2009".to_time
-    period.every(2).hours.to(12).next_run(2).should == "Aug 06 04:00:00 2009".to_time
+    (n = period.every(2).hours.to(12).next_run).should == "Aug 06 00:00:00 2009".to_time
+    (n = Period.new(n).every(2).hours.to(12).next_run).should == "Aug 06 02:00:00 2009".to_time
+    (n = Period.new(n).every(2).hours.to(12).next_run).should == "Aug 06 04:00:00 2009".to_time
     
-    period.every(5).minutes.from(15).to(50).next_run(0).should == "Aug 05 14:45:00 2009".to_time
-    period.every(5).minutes.from(15).to(50).next_run(1).should == "Aug 05 14:50:00 2009".to_time
-    period.every(5).minutes.from(15).to(50).next_run(2).should == "Aug 05 15:15:00 2009".to_time
-    # period.every(5).minutes.from(15).to(50).next_run(3).should == "Aug 05 15:20:00 2009".to_time # skip has limits...
+    (n = period.every(5).minutes.from(15).to(50).next_run).should == "Aug 05 14:45:00 2009".to_time
+    (n = Period.new(n).every(5).minutes.from(15).to(50).next_run).should == "Aug 05 14:50:00 2009".to_time
+    (n = Period.new(n).every(5).minutes.from(15).to(50).next_run).should == "Aug 05 15:15:00 2009".to_time
+    (n = Period.new(n).every(5).minutes.from(15).to(50).next_run).should == "Aug 05 15:20:00 2009".to_time
 
-    period.every(2).hours.from(8).to(12).next_run(0).should == "Aug 06 08:00:00 2009".to_time
-    period.every(2).hours.from(8).to(12).next_run(1).should == "Aug 06 10:00:00 2009".to_time
-    period.every(2).hours.from(8).to(12).next_run(2).should == "Aug 06 12:00:00 2009".to_time
-    period.every(2).hours.from(8).to(12).next_run(3).should == "Aug 07 08:00:00 2009".to_time
-    # period.every(2).hours.from(8).to(12).next_run(4).should == "Aug 07 10:00:00 2009".to_time # skip has limits...
+    (n = period.every(2).hours.from(8).to(12).next_run).should == "Aug 06 08:00:00 2009".to_time
+    (n = Period.new(n).every(2).hours.from(8).to(12).next_run).should == "Aug 06 10:00:00 2009".to_time
+    (n = Period.new(n).every(2).hours.from(8).to(12).next_run).should == "Aug 06 12:00:00 2009".to_time
+    (n = Period.new(n).every(2).hours.from(8).to(12).next_run).should == "Aug 07 08:00:00 2009".to_time
+    (n = Period.new(n).every(2).hours.from(8).to(12).next_run).should == "Aug 07 10:00:00 2009".to_time
 
-    period.every(3).days.from(5).to(20).next_run(0).should == "Aug 08 00:00:00 2009".to_time
-    period.every(3).days.from(5).to(20).next_run(1).should == "Aug 11 00:00:00 2009".to_time
-    period.every(3).days.from(5).to(20).next_run(2).should == "Aug 14 00:00:00 2009".to_time
-    period.every(3).days.from(5).to(20).next_run(3).should == "Aug 17 00:00:00 2009".to_time
-    period.every(3).days.from(5).to(20).next_run(4).should == "Aug 20 00:00:00 2009".to_time
-    period.every(3).days.from(5).to(20).next_run(5).should == "Sep 05 00:00:00 2009".to_time
+    (n = period.every(3).days.from(5).to(20).next_run).should == "Aug 08 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(5).to(20).next_run).should == "Aug 11 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(5).to(20).next_run).should == "Aug 14 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(5).to(20).next_run).should == "Aug 17 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(5).to(20).next_run).should == "Aug 20 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(5).to(20).next_run).should == "Sep 05 00:00:00 2009".to_time
+  end
+  
+  it "should calculate overnight limits correctly" do
+    (n = period.every.hour.from(22).to(2).next_run).should == "Aug 05 22:00:00 2009".to_time
+    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 05 23:00:00 2009".to_time
+    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 06 00:00:00 2009".to_time
+    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 06 01:00:00 2009".to_time
+    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 06 02:00:00 2009".to_time
+    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 06 22:00:00 2009".to_time
   end
   
   it "should avoid some pitfalls" do
     Period.new("Aug 05 14:41:23 2009".to_time).every.hour.at(40).next_run.should == "Aug 05 15:40:00 2009".to_time
     Period.new("Aug 05 14:39:23 2009".to_time).every.hour.at(40).next_run.should == "Aug 05 15:40:00 2009".to_time
     
-    lambda {period.from(5).to(1)}.should raise_error
-    lambda {period.to(1).from(5)}.should raise_error
+    # lambda {period.from(5).to(1)}.should raise_error
+    # lambda {period.to(1).from(5)}.should raise_error
   end
   
   def period

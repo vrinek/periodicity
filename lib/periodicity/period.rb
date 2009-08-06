@@ -92,7 +92,7 @@ class Period
     every(2).hours.from(8) # means "every 2 hours beginning from 8:00"
 =end
   def from(time)
-    raise "From can't be after to" if @to and @to < time
+    # raise "From can't be after to" if @to and @to < time
     
     @from = time
     return self
@@ -103,7 +103,7 @@ class Period
     every(2).hours.to(12) # means "every 2 hours until 12:00"
 =end
   def to(time)
-    raise "To can't be before from" if @from and time < @from
+    # raise "To can't be before from" if @from and time < @from
     
     @to = time
     return self
@@ -141,7 +141,7 @@ class Period
     
   Note that it rounds all "sub-time" to 0 by default (can be overriden with at)
 =end
-  def next_run(skip = 0)
+  def next_run
     return Time.now unless @last_run
     
     @next_run = @last_run
@@ -152,12 +152,6 @@ class Period
       calc_precision
       
       calc_limits
-      
-      unless skip.zero?
-        @next_run += @interval * @scope * skip
-
-        calc_limits
-      end
     else
       raise 'No proper period specified'
     end
@@ -200,7 +194,7 @@ class Period
       if @from and now < @from
         @next_run += (@from - now) * @scope
       elsif @to and now > @to
-        @next_run += ((@from || 0) - now) * @scope + uptime
+        @next_run += ((@from && @from < @to ? @from : 0) - now) * @scope + uptime
       end
     end
   end
