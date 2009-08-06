@@ -81,12 +81,45 @@ describe Period do
   end
   
   it "should calculate overnight limits correctly" do
-    (n = period.every.hour.from(22).to(2).next_run).should == "Aug 05 22:00:00 2009".to_time
-    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 05 23:00:00 2009".to_time
-    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 06 00:00:00 2009".to_time
-    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 06 01:00:00 2009".to_time
-    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 06 02:00:00 2009".to_time
-    # (n = Period.new(n).every.hour.from(22).to(2).next_run).should == "Aug 06 22:00:00 2009".to_time
+    (n = period.every.hour.from(21).to(2).next_run).should == "Aug 05 21:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 05 22:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 05 23:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 06 00:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 06 01:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 06 02:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 06 21:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 06 22:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 06 23:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 07 00:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 07 01:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 07 02:00:00 2009".to_time
+    (n = Period.new(n).every.hour.from(21).to(2).next_run).should == "Aug 07 21:00:00 2009".to_time
+
+    (n = period.every.day.from(29).to(2).next_run).should == "Aug 29 00:00:00 2009".to_time
+    (n = Period.new(n).every.day.from(29).to(2).next_run).should == "Aug 30 00:00:00 2009".to_time
+    (n = Period.new(n).every.day.from(29).to(2).next_run).should == "Aug 31 00:00:00 2009".to_time
+    (n = Period.new(n).every.day.from(29).to(2).next_run).should == "Sep 01 00:00:00 2009".to_time
+
+    (n = period.every(3).days.from(29).to(10).next_run).should == "Aug 08 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(29).to(10).next_run).should == "Aug 29 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(29).to(10).next_run).should == "Sep 01 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(29).to(10).next_run).should == "Sep 04 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(29).to(10).next_run).should == "Sep 07 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(29).to(10).next_run).should == "Sep 10 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(29).to(10).next_run).should == "Sep 29 00:00:00 2009".to_time
+    (n = Period.new(n).every(3).days.from(29).to(10).next_run).should == "Oct 02 00:00:00 2009".to_time
+  end
+  
+  it "should calculate overnight with precision limits correctly" do
+    (n = period.every.hour.at(15).from(21).to(2).next_run).should == "Aug 05 21:15:00 2009".to_time
+    (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 05 22:15:00 2009".to_time
+    (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 05 23:15:00 2009".to_time
+    (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 06 00:15:00 2009".to_time
+    (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 06 01:15:00 2009".to_time
+    (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 06 21:15:00 2009".to_time
+    (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 06 22:15:00 2009".to_time
+    (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 06 23:15:00 2009".to_time
+    (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 07 00:15:00 2009".to_time
   end
   
   it "should avoid some pitfalls" do

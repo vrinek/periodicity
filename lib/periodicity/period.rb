@@ -190,11 +190,25 @@ class Period
   end
   
   def calc_limits
-    if @from or @to
+    if @from and @to and @from > @to # aka overnight limits
+      if now < @from
+        @next_run += (
+        if @to < now + (now(downtime)*(downtime / @scope.to_f) || 0)
+          @from - now
+        else
+          0
+        end
+        ) * @scope
+      end
+
+      if now > @to and @from < @to
+        @next_run += (@from - now) * @scope + uptime
+      end
+    elsif @from or @to
       if @from and now < @from
         @next_run += (@from - now) * @scope
       elsif @to and now > @to
-        @next_run += ((@from && @from < @to ? @from : 0) - now) * @scope + uptime
+        @next_run += ((@from || 0) - now) * @scope + uptime
       end
     end
   end
