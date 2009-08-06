@@ -120,6 +120,15 @@ describe Period do
     (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 06 22:15:00 2009".to_time
     (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 06 23:15:00 2009".to_time
     (n = Period.new(n).every.hour.at(15).from(21).to(2).next_run).should == "Aug 07 00:15:00 2009".to_time
+
+    (n = period.every(5).minutes.at(30).from(40).to(10).next_run).should == "Aug 05 14:45:30 2009".to_time
+    (n = Period.new(n).every.every(5).minutes.at(30).from(40).to(10).next_run).should == "Aug 05 14:50:30 2009".to_time
+    (n = Period.new(n).every.every(5).minutes.at(30).from(40).to(10).next_run).should == "Aug 05 14:55:30 2009".to_time
+    (n = Period.new(n).every.every(5).minutes.at(30).from(40).to(10).next_run).should == "Aug 05 15:00:30 2009".to_time
+    (n = Period.new(n).every.every(5).minutes.at(30).from(40).to(10).next_run).should == "Aug 05 15:05:30 2009".to_time
+    (n = Period.new(n).every.every(5).minutes.at(30).from(40).to(10).next_run).should == "Aug 05 15:40:30 2009".to_time
+    (n = Period.new(n).every.every(5).minutes.at(30).from(40).to(10).next_run).should == "Aug 05 15:45:30 2009".to_time
+    (n = Period.new(n).every.every(5).minutes.at(30).from(40).to(10).next_run).should == "Aug 05 15:50:30 2009".to_time
   end
   
   it "should avoid some pitfalls" do
