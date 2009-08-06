@@ -12,7 +12,6 @@ Helps calculate the next run for schedulers using a human readable syntax.
 means: every 2 hours at :20 from 10:00 to 15:00 (10:20, 12:20, 14:20)
   
   period.next_run # returns the next calculated time as a Time object
-  period.next_run(1) # skips 1 run (as of 0.1, it behaves buggy with from and to limits)
   
   Period.new.every(:half).hour # every 30 minutes
   Period.every.week # every week
