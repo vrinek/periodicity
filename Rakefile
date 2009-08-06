@@ -14,6 +14,7 @@ $hoe = Hoe.spec 'periodicity' do
   self.developer              'Kostas Karachalios', 'kostas.karachalios@me.com'
   self.post_install_message = 'PostInstall.txt' # TODO remove if post-install message not required
   self.extra_deps           = [['activesupport','>= 2.3.2']]
+  self.extra_rdoc_files     = ['README.rdoc']
 
 end
 

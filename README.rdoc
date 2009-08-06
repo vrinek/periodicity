@@ -31,4 +31,4 @@ means: every 2 hours at :20 from 10:00 to 15:00 (10:20, 12:20, 14:20)
 
 * Period.every(:other).day
 * support "overnight" limits (from 22:00 tonight to 02:00 tomorrow) like:
-  Period.every.hour.from(20).to(2)
+    Period.every.hour.from(20).to(2)
