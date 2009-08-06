@@ -14,8 +14,8 @@ means: every 2 hours at :20 from 10:00 to 15:00 (10:20, 12:20, 14:20)
   period.next_run # returns the next calculated time as a Time object
   
   Period.new.every(:half).hour # every 30 minutes
-  Period.every.week # every week
-  Period.every(5).seconds # every 5 seconds
+  Period.new.every.week # every week
+  Period.new.every(5).seconds # every 5 seconds
 
 == REQUIREMENTS:
 
