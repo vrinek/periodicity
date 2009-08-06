@@ -139,7 +139,7 @@ class Period
     now = "Aug 05 14:40:23 2009".to_time
     Period.new(now).every(2).hours.next_run # => Wed Aug 05 16:00:00 UTC 2009
     
-  Note that it round all "sub-time" to 0 by default (can be overriden with at)
+  Note that it rounds all "sub-time" to 0 by default (can be overriden with at)
 =end
   def next_run(skip = 0)
     return Time.now unless @last_run
@@ -186,48 +186,35 @@ class Period
   
   def calc_precision(scope = nil)
     @at = 0 if scope
-    
-    case scope || @scope
-    when 1.minute
-      unless @next_run.sec == @at
-        @next_run += (@at - @next_run.sec)
+
+    if down = downtime(scope || @scope)
+      unless now(down) == @at
+        @next_run += (@at - now(down)) * down
       end
-    when 1.hour
-      unless @next_run.min == @at
-        @next_run += (@at - @next_run.min).minutes
-      end
-      calc_precision 1.minute
-    when 1.day
-      unless @next_run.hour == @at
-        @next_run += (@at - @next_run.hour).hours
-      end
-      calc_precision 1.hour
-    when 1.week
-      unless @next_run.hour == @at
-        @next_run += (@at - @next_run.hour).hours
-      end
-      calc_precision 1.hour
+      calc_precision down
     end
   end
   
   def calc_limits
     if @from or @to
-      now = case @scope
-      when 1.second
-        @next_run.sec
-      when 1.minute
-        @next_run.min
-      when 1.hour
-        @next_run.hour
-      when 1.day
-        @next_run.day
-      end
-      
       if @from and now < @from
         @next_run += (@from - now) * @scope
       elsif @to and now > @to
         @next_run += ((@from || 0) - now) * @scope + uptime
       end
+    end
+  end
+  
+  def now(scope = nil)
+    case scope || @scope
+    when 1.second
+      @next_run.sec
+    when 1.minute
+      @next_run.min
+    when 1.hour
+      @next_run.hour
+    when 1.day
+      @next_run.day
     end
   end
   
@@ -246,8 +233,8 @@ class Period
     end
   end
   
-  def downtime
-    case @scope
+  def downtime(scope = nil)
+    case scope || @scope
     when 1.minute
       1.second
     when 1.hour
