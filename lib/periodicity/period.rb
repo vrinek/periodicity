@@ -177,6 +177,8 @@ class Period
     when /quarter/i
       @scope = @scope/base
       base/4
+    when /other/i
+      2
     else
       @interval
     end

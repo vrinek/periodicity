@@ -5,5 +5,5 @@ require 'activesupport'
 require 'periodicity/period'
 
 module Periodicity
-  VERSION = '0.1'
+  VERSION = '0.1.1'
 end

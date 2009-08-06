@@ -15,6 +15,7 @@ $hoe = Hoe.spec 'periodicity' do
   self.post_install_message = 'PostInstall.txt' # TODO remove if post-install message not required
   self.extra_deps           = [['activesupport','>= 2.3.2']]
   self.extra_rdoc_files     = ['README.rdoc']
+  self.url                  = 'http://github.com/vrinek/periodicity'
 
 end
 

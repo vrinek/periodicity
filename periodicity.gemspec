@@ -2,16 +2,16 @@
 
 Gem::Specification.new do |s|
   s.name = %q{periodicity}
-  s.version = "0.1"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kostas Karachalios"]
   s.date = %q{2009-08-06}
   s.description = %q{Helps calculate the next run for schedulers using a human readable syntax.}
   s.email = ["kostas.karachalios@me.com"]
-  s.extra_rdoc_files = ["History.txt", "Manifest.txt", "PostInstall.txt"]
+  s.extra_rdoc_files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc"]
   s.files = ["History.txt", "Manifest.txt", "PostInstall.txt", "README.rdoc", "Rakefile", "lib/periodicity.rb", "lib/periodicity/period.rb", "script/console", "script/destroy", "script/generate", "spec/periodicity_spec.rb", "spec/spec.opts", "spec/spec_helper.rb", "tasks/rspec.rake"]
-  s.homepage = %q{http://github.com/#{github_username}/#{project_name}}
+  s.homepage = %q{http://github.com/vrinek/periodicity}
   s.post_install_message = %q{PostInstall.txt}
   s.rdoc_options = ["--main", "README.rdoc"]
   s.require_paths = ["lib"]

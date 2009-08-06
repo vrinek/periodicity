@@ -22,6 +22,7 @@ describe Period do
     period.every.day.next_run.should == "Aug 06 00:00:00 2009".to_time
     period.every(:quarter).hour.next_run.should == "Aug 05 14:55:00 2009".to_time
     period.every(:half).minute.next_run.should == "Aug 05 14:40:53 2009".to_time
+    period.every(:other).hour.next_run.should == period.every(2).hours.next_run
 
     period.every.day.at(:morning).next_run.should == "Aug 06 09:00:00 2009".to_time
     period.every.day.at(:noon).next_run.should == "Aug 06 12:00:00 2009".to_time
