@@ -36,7 +36,14 @@ describe Period do
     period.every.day.at('5:00').next_run.should == "Aug 06 05:00:00 2009".to_time
     period.every.day.at('05:00').next_run.should == "Aug 06 05:00:00 2009".to_time
     
-    lambda {period.every.day.at('05:30').next_run}.should raise_error # not yet implemented
+    (n = period.every.day.at('05:30').next_run).should == "Aug 06 05:30:00 2009".to_time
+    (n = Period.new(n).every.day.at('05:30').next_run).should == "Aug 07 05:30:00 2009".to_time
+    (n = Period.new(n).every.day.at('05:30').next_run).should == "Aug 08 05:30:00 2009".to_time
+    
+    (n = period.every(2).days.from(12).to(17).at('05:30').next_run).should == "Aug 12 05:30:00 2009".to_time
+    (n = Period.new(n).every(2).days.from(12).to(17).at('05:30').next_run).should == "Aug 14 05:30:00 2009".to_time
+    (n = Period.new(n).every(2).days.from(12).to(17).at('05:30').next_run).should == "Aug 16 05:30:00 2009".to_time
+    (n = Period.new(n).every(2).days.from(12).to(17).at('05:30').next_run).should == "Sep 12 05:30:00 2009".to_time
   end
   
   it "should return correct time with precision" do
@@ -131,12 +138,9 @@ describe Period do
     (n = Period.new(n).every.every(5).minutes.at(30).from(40).to(10).next_run).should == "Aug 05 15:50:30 2009".to_time
   end
   
-  it "should avoid some pitfalls" do
+  it "should avoid some obvious pitfalls" do
     Period.new("Aug 05 14:41:23 2009".to_time).every.hour.at(40).next_run.should == "Aug 05 15:40:00 2009".to_time
     Period.new("Aug 05 14:39:23 2009".to_time).every.hour.at(40).next_run.should == "Aug 05 15:40:00 2009".to_time
-    
-    # lambda {period.from(5).to(1)}.should raise_error
-    # lambda {period.to(1).from(5)}.should raise_error
   end
   
   def period

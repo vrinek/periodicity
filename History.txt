@@ -1,3 +1,7 @@
+=== 0.2.1 -- 2009-08-06
+
+* <b>[FEATURE]</b> Now supports <tt>at('5:20')</tt> kind of precision
+
 === 0.2 -- 2009-08-06
 
 * <b>[FEATURE]</b> Can use _overnight_ limits (e.g. from 22:00 to 02:00)

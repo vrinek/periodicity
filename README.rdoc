@@ -28,4 +28,4 @@ means: every 2 hours at :20 from 10:00 to 15:00 (10:20, 12:20, 14:20)
 
 == TODO:
 
-* add <em>sub-sub-time</em> precision to at(time) (e.g. '5:30')
+* add something like "every minute from 20:00 to 21:00 and from 02:00 to 03:00"

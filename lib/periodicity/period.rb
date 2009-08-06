@@ -108,9 +108,15 @@ class Period
 =begin rdoc
   Sets a specific "sub-time" for the next_run:
     every(2).hours.at(15) # means "every 2 hours at the first quarter of each" e.g. 12:15, 14:15, 16:15
-  
-  NOTE: when using at and from, to limits together the limits *always* calculate at 0 "sub-time":
+    
+  Specific time within a day is also supported:
+    every(3).days.at('5:30') # means "every 3 days at 05:30"
+    
+  <b>NOTE 1:</b> when using at and from, to limits together the limits *always* calculate at 0 "sub-time":
     every(2).hours.at(15).from(12).to(16) # will return 12:15, 14:15 but not 16:15 because the to limit ends at 16:00
+    
+  <b>NOTE 2:</b> when using minute precision (5:30) but instead of every.day the interval is in another period, the minutes will be discarded.
+    every.hour.at('5:30') # means "every hour at :05" (e.g. 12:05, 13:05, 14:05)
 =end
   def at(time)
     unless time.is_a?(Integer)
@@ -118,7 +124,8 @@ class Period
       when /^\d+:00$/
         time[/^\d+/].to_i
       when /^\d+:\d{2}$/
-        raise 'Precise timing like "20:15" is not yet supported'
+        @min_at = time.split(/:/)[1].to_i
+        time.split(/:/)[0].to_i
       when /^(noon|afternoon|midnight|morning)$/
         DAY_PERIODS[time.to_s]
       else
@@ -175,7 +182,13 @@ class Period
   end
   
   def calc_precision(scope = nil)
-    @at = 0 if scope
+    if scope
+      @at = if @min_at and scope == 1.hour
+        @min_at
+      else
+        0
+      end
+    end
 
     if down = downtime(scope || @scope)
       unless now(down) == @at
