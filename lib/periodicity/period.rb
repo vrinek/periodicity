@@ -92,8 +92,6 @@ class Period
     every(2).hours.from(8) # means "every 2 hours beginning from 8:00"
 =end
   def from(time)
-    # raise "From can't be after to" if @to and @to < time
-    
     @from = time
     return self
   end
@@ -103,8 +101,6 @@ class Period
     every(2).hours.to(12) # means "every 2 hours until 12:00"
 =end
   def to(time)
-    # raise "To can't be before from" if @from and time < @from
-    
     @to = time
     return self
   end
